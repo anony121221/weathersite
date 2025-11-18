@@ -1,273 +1,327 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cole's Weather Site</title>
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --card:#0f1720;
-      --muted:#9aa5b1;
-      --accent:#1ea7fd;
-      --text:#e6eef6;
-      --gap:12px;
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,var(--bg),#061018);
-      color:var(--text);
-      padding:18px;
-    }
-    .center {text-align:center;margin-top:80px;}
-    .btn {
-      display:inline-block;
-      padding:14px 22px;
-      margin:12px;
-      border-radius:12px;
-      background:var(--accent);
-      color:#000;
-      font-size:1.1rem;
-      font-weight:600;
-      text-decoration:none;
-      cursor:pointer;
-      border:none;
-    }
-    .btn:hover {opacity:0.9;}
-    .btn.disabled {opacity:0.5;pointer-events:none;cursor:not-allowed;}
-    .page {display:none;}
-    .page.active {display:block;}
-    .back-btn {background:#555;color:#fff;margin-bottom:20px;}
-    header{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:14px;
-      flex-wrap:wrap;
-    }
-    h1{margin:0;font-size:1.25rem}
-    .controls{display:flex;gap:8px;align-items:center}
-    #search{
-      padding:8px 10px;
-      border-radius:8px;
-      border:none;
-      min-width:220px;
-      background:#0b1116;
-      color:var(--text);
-      outline:2px solid transparent;
-    }
-    #search:focus{outline:2px solid rgba(30,167,253,0.12)}
-    #refresh{
-      padding:8px 12px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.06);
-      background:linear-gradient(180deg,#0f1722,#081018);
-      color:var(--text);
-      cursor:pointer;
-    }
-    .info{color:var(--muted);font-size:0.9rem;margin-top:6px;width:100%}
-    main{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-    .file-table{width:100%;border-collapse:collapse}
-    .file-table thead th{
-      text-align:left;padding:10px 8px;color:var(--muted);font-size:0.9rem;border-bottom:1px solid rgba(255,255,255,0.04)
-    }
-    .file-table tbody td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.02);vertical-align:middle}
-    .small{font-size:0.85rem;color:var(--muted)}
-    .btn-download{
-      padding:6px 10px;border-radius:8px;border:none;cursor:pointer;background:var(--accent);color:#03101a;text-decoration:none;font-weight:600
-    }
-    .pager{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
-    .pager button{padding:6px 10px;border-radius:8px;border:none;background:#0b1116;color:var(--text);cursor:pointer}
-    footer{margin-top:12px;color:var(--muted);font-size:0.9rem}
-    @media (max-width:720px){
-      .file-table thead{display:none}
-      .file-table tbody td{display:block;padding:10px 6px}
-      .file-table tbody tr{margin-bottom:8px;background:rgba(255,255,255,0.01);border-radius:8px}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cole's Weather Site</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        button, input {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        input {
+            padding: 10px 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        .file-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .file-item {
+            background: #1e293b;
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .file-item:hover {
+            background: #334155;
+            border-color: #475569;
+            transform: translateX(5px);
+        }
+
+        .file-item a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .file-item a:hover {
+            color: #06b6d4;
+        }
+
+        .file-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .folder-icon {
+            fill: #fbbf24;
+        }
+
+        .file-icon-doc {
+            fill: #3b82f6;
+        }
+
+        .loading {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 20px;
+        }
+
+        .error {
+            background: #7f1d1d;
+            border: 1px solid #dc2626;
+            color: #fca5a5;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            min-width: auto;
+        }
+
+        .pagination button.active {
+            background: #3b82f6;
+            border-color: #06b6d4;
+        }
+
+        .stats {
+            text-align: center;
+            color: #94a3b8;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            input {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="home" class="page active">
-    <div class="center">
-      <h1 style="font-size:2.2rem;margin-bottom:20px;">Cole's Weather Site</h1>
-      <button class="btn" onclick="goToPage('tornado')">Tornado NEXRAD Files</button>
-      <button class="btn disabled">Doppler on Wheels (Coming Soon)</button>
+    <div class="container">
+        <header>
+            <h1>🌤️ Cole's Weather Site</h1>
+            <p style="color: #94a3b8;">Tornado NEXRAD Data Archive</p>
+        </header>
+
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search files...">
+            <button onclick="loadFiles()">🔄 Refresh</button>
+        </div>
+
+        <div class="stats">
+            <span>Total Files: <strong id="totalCount">0</strong> | Showing: <strong id="showingCount">0</strong></span>
+        </div>
+
+        <ul class="file-list" id="fileList">
+            <li class="loading">Loading files...</li>
+        </ul>
+
+        <div class="pagination" id="pagination"></div>
     </div>
-  </div>
 
-  <div id="tornado" class="page">
-    <button class="btn back-btn" onclick="goToPage('home')">← Back Home</button>
-    <header>
-      <h1>Drive Folder Index</h1>
-      <div class="controls">
-        <input id="search" placeholder="Search files..." />
-        <button id="refresh">Refresh</button>
-      </div>
-      <div id="info" class="info">Loading…</div>
-    </header>
+    <script>
+        const FOLDER_ID = '1Xts9_L-N68visoeqmUgN1grSqQBpsL1M';
+        const API_KEY = 'AIzaSyC431oUvXQR4tv7d8ZWfUZH3eQuR0rLLcM';
+        const ITEMS_PER_PAGE = 20;
 
-    <main>
-      <table id="fileTable" class="file-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Modified</th>
-            <th>Type</th>
-            <th>Download</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+        let allFiles = [];
+        let currentPage = 1;
 
-      <div id="pager" class="pager"></div>
-    </main>
+        async function loadFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '<li class="loading">Loading files...</li>';
 
-    <footer>
-      <small>Hosted listing for folder: <span id="folderId"></span></small>
-    </footer>
-  </div>
+            try {
+                const url = `https://www.googleapis.com/drive/v3/files?q='${FOLDER_ID}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType,webViewLink)&orderBy=name&pageSize=1000`;
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Failed to fetch files');
+                
+                const data = await response.json();
+                
+                if (!data.files || data.files.length === 0) {
+                    fileList.innerHTML = '<li class="file-item" style="justify-content: center;">No files found</li>';
+                    document.getElementById('totalCount').textContent = '0';
+                    document.getElementById('showingCount').textContent = '0';
+                    return;
+                }
 
-<script>
-const API_KEY = "AIzaSyC431oUvXQR4tv7d8ZWfUZH3eQuR0rLLcM";
-const FOLDER_ID = "1Xts9_L-N68visoeqmUgN1grSqQBpsL1M";
+                allFiles = data.files;
+                currentPage = 1;
+                filterAndDisplayFiles();
+                setupSearch();
 
-function goToPage(pageName) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageName).classList.add('active');
-  window.scrollTo(0, 0);
-  if (pageName === 'tornado' && allFiles.length === 0) {
-    fetchAllFiles();
-  }
-}
+            } catch (error) {
+                console.error('Error loading files:', error);
+                fileList.innerHTML = '<li class="error">Error loading files. Make sure your API key is set correctly.</li>';
+            }
+        }
 
-const infoEl = document.getElementById("info");
-const tbody = document.querySelector("#fileTable tbody");
-const folderIdEl = document.getElementById("folderId");
-const refreshBtn = document.getElementById("refresh");
-const searchInput = document.getElementById("search");
-const pagerEl = document.getElementById("pager");
+        function filterAndDisplayFiles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allFiles.filter(file => 
+                file.name.toLowerCase().includes(searchTerm)
+            );
 
-folderIdEl.textContent = FOLDER_ID;
+            const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIdx = startIdx + ITEMS_PER_PAGE;
+            const pageFiles = filtered.slice(startIdx, endIdx);
 
-let allFiles = [];
-let pageSize = 50;
-let currentPage = 1;
+            const fileList = document.getElementById('fileList');
+            
+            if (pageFiles.length === 0) {
+                fileList.innerHTML = '<li class="file-item" style="justify-content: center;">No files match your search</li>';
+                document.getElementById('pagination').innerHTML = '';
+                document.getElementById('showingCount').textContent = '0';
+                return;
+            }
 
-searchInput.addEventListener("input", renderCurrentPage);
-refreshBtn.addEventListener("click", () => { fetchAllFiles(true); });
+            fileList.innerHTML = pageFiles.map(file => {
+                const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
+                const icon = isFolder ? 
+                    '<svg class="file-icon folder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>' :
+                    '<svg class="file-icon file-icon-doc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>';
+                
+                return `
+                    <li class="file-item">
+                        ${icon}
+                        <a href="${file.webViewLink}" target="_blank">${file.name}</a>
+                    </li>
+                `;
+            }).join('');
 
-function buildListUrl(pageToken) {
-  const fields = encodeURIComponent("nextPageToken, files(id,name,size,modifiedTime,mimeType)");
-  const q = encodeURIComponent(`'${FOLDER_ID}' in parents and trashed=false`);
-  const base = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=1000&key=${API_KEY}`;
-  return pageToken ? base + `&pageToken=${pageToken}` : base;
-}
+            document.getElementById('totalCount').textContent = allFiles.length;
+            document.getElementById('showingCount').textContent = pageFiles.length;
+            setupPagination(filtered.length);
+        }
 
-async function fetchAllFiles(force=false) {
-  infoEl.textContent = "Fetching file list from Drive…";
-  tbody.innerHTML = "";
-  allFiles = [];
-  currentPage = 1;
-  pagerEl.innerHTML = "";
-  try {
-    let pageToken = null;
-    do {
-      const url = buildListUrl(pageToken);
-      const res = await fetch(url);
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`Drive API error: ${res.status} ${text}`);
-      }
-      const data = await res.json();
-      if (data.files && data.files.length) {
-        allFiles.push(...data.files);
-      }
-      pageToken = data.nextPageToken || null;
-    } while (pageToken);
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
 
-    allFiles.sort((a,b) => (b.modifiedTime||"") .localeCompare(a.modifiedTime||""));
+            let html = '';
+            
+            if (currentPage > 1) {
+                html += `<button onclick="goToPage(${currentPage - 1})">← Previous</button>`;
+            }
 
-    infoEl.textContent = `Found ${allFiles.length} file(s).`;
-    renderPager();
-    renderCurrentPage();
-  } catch (err) {
-    console.error(err);
-    infoEl.textContent = `Error: ${err.message}`;
-  }
-}
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `<button onclick="goToPage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += '<span style="padding: 8px 5px;">...</span>';
+                }
+            }
 
-function humanSize(bytes){
-  if (!bytes) return "-";
-  let b = Number(bytes);
-  const units = ["B","KB","MB","GB","TB"];
-  let i=0;
-  while (b>=1024 && i<units.length-1){ b/=1024; i++;}
-  return `${b.toFixed(b>=100?0:1)} ${units[i]}`;
-}
+            if (currentPage < totalPages) {
+                html += `<button onclick="goToPage(${currentPage + 1})">Next →</button>`;
+            }
 
-function downloadLinkFor(fileId){
-  return `https://drive.google.com/uc?export=download&id=${fileId}`;
-}
+            pagination.innerHTML = html;
+        }
 
-function renderCurrentPage(){
-  const q = (searchInput.value || "").toLowerCase().trim();
-  let filtered = allFiles.filter(f => {
-    if (!q) return true;
-    return (f.name && f.name.toLowerCase().includes(q)) ||
-           (f.id && f.id.toLowerCase().includes(q));
-  });
-  const total = filtered.length;
-  const pages = Math.max(1, Math.ceil(total / pageSize));
-  if (currentPage > pages) currentPage = pages;
-  const start = (currentPage - 1) * pageSize;
-  const slice = filtered.slice(start, start + pageSize);
+        function goToPage(page) {
+            currentPage = page;
+            filterAndDisplayFiles();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-  tbody.innerHTML = "";
-  if (slice.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="small">No files found.</td></tr>`;
-  } else {
-    for (const f of slice) {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>
-          <div><strong>${escapeHtml(f.name)}</strong></div>
-          <div class=small>ID: ${f.id}</div>
-        </td>
-        <td class=small>${humanSize(f.size)}</td>
-        <td class=small>${f.modifiedTime ? new Date(f.modifiedTime).toLocaleString() : "-"}</td>
-        <td class=small>${f.mimeType || "-"}</td>
-        <td>
-          <a class="btn-download" href="${downloadLinkFor(f.id)}" target="_blank" rel="noopener noreferrer">Download</a>
-        </td>
-      `;
-      tbody.appendChild(row);
-    }
-  }
-  renderPager();
-}
+        function setupSearch() {
+            document.getElementById('searchInput').addEventListener('input', () => {
+                currentPage = 1;
+                filterAndDisplayFiles();
+            });
+        }
 
-function renderPager(){
-  const q = (searchInput.value||"").toLowerCase().trim();
-  let filtered = allFiles.filter(f => !q || f.name.toLowerCase().includes(q));
-  const total = filtered.length;
-  const pages = Math.max(1, Math.ceil(total / pageSize));
-  pagerEl.innerHTML = "";
-  for (let p=1; p<=pages; p++){
-    const btn = document.createElement("button");
-    btn.textContent = p;
-    if (p===currentPage){ btn.style.opacity = "0.6"; }
-    btn.onclick = () => { currentPage=p; renderCurrentPage(); };
-    pagerEl.appendChild(btn);
-  }
-}
-
-function escapeHtml(t){
-  return t.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-}
-</script>
+        loadFiles();
+        setInterval(loadFiles, 60000);
+    </script>
 </body>
 </html>
